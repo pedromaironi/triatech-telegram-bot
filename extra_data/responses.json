@@ -1,3 +1,58 @@
 {
-    "start_1": "Bienvenido a @TriaTechBot. Este bot te mostrara todos los Articulos disponibles, te avisará de las nuevas ofertas, te permitirá ver información de productos, más cosas en el futuro :)"
+    "start_1": "Hi %s, first of all, select your language :)",
+    "start_2": {
+        "es": "Bienvenido a @TriaTechBot. Este bot te mostrara todos los Articulos disponibles, te avisará de las nuevas ofertas, te permitirá ver información de productos, más cosas en el futuro :)",
+        "en": "Welcome to @TriaTechBot. This bot will show you all the available Articles, it will notify you of new offers, it will allow you to see product information, more things in the future :)"
+    },
+    "start_already_user": {
+        "es": "Ya estabas en nuestra base de datos :)",
+        "en": "You already were in our data base :)"
+    },
+    "start_autodetect": {
+        "es": "Idioma autodetectado: Español\n\nPara cambiarlo utiliza /lang ^^",
+        "en": "Language autodetected: English\n\nTo change it use /lang ^^"
+    },
+    "help_1": {
+        "es": "El bot dispone de los siguientes comandos:",
+        "en": "The bot has the following commands:"
+    },
+    "lang_1": {
+        "es": "Selecciona un idioma o escribe /cancel para cancelar el comando.",
+        "en": "Select a language or type /cancel to cancel the command."
+    },
+    "lang_2": {
+        "es": "El idioma ha sido actualizado al Español.",
+        "en": "The language has been updated to English"
+    },
+    "lang_error": {
+        "es": "Lo siento pero el idioma _%s_ no está disponible aún. Porfavor selecciona un idioma del teclado.\n\nSi quieres colaborar para traducir el bot al _%s_ contáctame a @pedromaironi",
+        "en": "I'm sorry but the language _%s_ is not supported yet. Please select a language from the keyboard.\n\nIf you want to colaborete for translating the bot to _%s_ contact me at @pedromaironi"
+    },
+    "about": {
+        "es": "Proyecto hecho por Erik y Pedro",
+        "en": "Project done for Erik and Pedro"
+    },
+    "help_1": {
+        "es": "El bot dispone de los siguientes comandos inline:",
+        "en": "The bot has the following inline commands:"
+    },
+    "help_2": {
+        "es": {
+            "notify": "Activa/Desactiva las notificaciones.",
+            "credits": "Créditos del bot.",
+            "help": "Proporciona información sobre los comandos.",
+            "lang": "Muestra un teclado para cambiar el idioma del bot.",
+            "me": "Obtén información de tu cuenta.",
+            "set_name": "Establecer tu nombre de usuario.",
+            "set_region": "Establecer tu region.",
+            "contact": "Envía un mensaje al administrador del bot.",
+            "cancel": "Cancela el comando actual.",
+            "info": "Proporciona información sobre el bot.",
+            "products": "Proporciona una lista con el nombre de todos los productos."
+        }
+    },
+    "user_info": {
+        "es": "*Fecha de registro*: _{}_\n*Notificaciones*: _{}_\n*Nombre de usuario*: _{}_"
+    }
+
 }
