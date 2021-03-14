@@ -1,6 +1,6 @@
 # Triatech bot
 
-Documentation of my [League of Legends](http://telegram.me/Triatechbot) Bot for Telegram.
+Documentation of my [TriaTech](http://telegram.me/Triatechbot) Bot for Telegram.
 
 <!-- # Requirements
 
