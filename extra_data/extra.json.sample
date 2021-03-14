@@ -1,0 +1,20 @@
+{
+    "rotation":"file_id",
+    "sale":"file_id",
+    "token":"<TOKEN>",
+    "token_logbot":"<TOKEN>",
+    "lol_api":"<API_KEY>",
+    "botan_token":"<BOTAN_TOKEN>",
+    "log":true,
+    "admins":[
+        0
+    ],
+    "beta":[
+        0
+    ],
+    "muted":false,
+    "udp_ip":"<SERVER>",
+    "udp_port":"<PORT>",
+    "udp_message":"<PREFIX>",
+    "static_version":"<CURRENT_STATIC_VERSION>"
+}
