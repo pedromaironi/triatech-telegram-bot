@@ -65,35 +65,32 @@ except pymongo.errors.ConnectionFailure as errorConnection:
 
 
 
-# def create_user():#id, first_name,last_name,username,language_code
-#     MONGO_COLLECTION = 'usuarios'
-#     base_data = client[MONGO_BASE_DATA]
-#     collection = base_data[MONGO_COLLECTION]
-#     with open('extra_data/user.json', encoding='utf-8') as user_data:
-#         data = json.load(user_data)
-#     print(data)
-#     collection.insert(user_data)
+def create_user():#id, first_name,last_name,username,language_code
+    MONGO_COLLECTION = 'usuarios'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    with open('extra_data/user.json') as f:
+        data = json.load(f)
+    collection.insert_one(data)
 
-# def is_user(cid):
-#     return db.usuarios.find_one(str(cid)) is not None and db.usuarios.find_one(str(cid))['active'] == True
+def is_user(cid):
+    return db.usuarios.find_one(str(cid)) is not None and db.usuarios.find_one(str(cid))['active'] == True
 
+def showInfoUser(uid):
+    MONGO_COLLECTION = 'usuarios'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"id":uid}
+    return collection.find_one(find)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def confirm_user(uid):
+    MONGO_COLLECTION = 'usuarios'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"id":uid}
+    return collection.find(find).count()
 
 
 
