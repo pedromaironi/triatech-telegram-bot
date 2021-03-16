@@ -92,8 +92,17 @@ def confirm_user(uid):
     find = {"id":uid}
     return collection.find(find).count()
 
+def count_products():
+    MONGO_COLLECTION = 'productos'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    return collection.find().count()
 
-
+def showInfoProducts():
+    MONGO_COLLECTION = 'productos'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    return collection.find()
 
 
 

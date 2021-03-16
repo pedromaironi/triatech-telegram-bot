@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from config import *
+
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 # markup.add(types.KeyboardButton('register'))
 
@@ -24,11 +25,13 @@ def commanStart(message):
 def commandMe(message):
     uid = message.from_user.id
     responses_me = showInfoUser(uid)
-    bot.reply_to(message,"Nombre de usuario: @" + responses_me['username'] + "\n" + "Nombre: " + responses_me['name'] + "\n" + "Apellido: " + responses_me['lastname'] + "\n" + "Lenguaje: " + responses_me['language_code'], reply_markup=markup)
+    print(responses_me['language_code'])
+    if(responses_me['language_code'] == 'None'):
+        txt = "Debes seleccionar un lenguaje en la configuracion de tu cuenta."
+    else:
+        txt = str(responses_me['language_code'])
+    bot.reply_to(message,"Nombre de usuario: @" + str(responses_me['username']) + "\n" + "Nombre: " + str(responses_me['name']) + "\n" + "Apellido: " + str(responses_me['lastname']) + "\n" + "Lenguaje: " + txt, reply_markup=markup)
     # print(responses_me['name'])
-
-
-
 
 # @bot.message_handler(commands=['register'])
 # def commanRegister(message):

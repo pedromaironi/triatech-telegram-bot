@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 from config import *
 from start import *
+from help import *
+from products import *
 
-def main():
-    pass
-
-bot.polling()#none_stop=True
+def main_loop():
+    bot.polling(True)
+    while 1:
+        time.sleep(3)
 
 if __name__ == '__main__':
     try:
-        main()
+        main_loop()
     except KeyboardInterrupt:
-        exit()
+        print('\nExiting by user request.\n')
+        sys.exit(0)
