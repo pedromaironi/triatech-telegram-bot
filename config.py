@@ -104,8 +104,13 @@ def showInfoProducts():
     collection = base_data[MONGO_COLLECTION]
     return collection.find()
 
-
-
+def showDetailsProducts(name):
+    MONGO_COLLECTION = 'productos'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"name":name}
+    return collection.find_one(find)
 
 
 
