@@ -59,6 +59,9 @@
     "inline_help_t": {
         "es": "AYUDA",
         "en": "HELP"
+    },
+    "contact": {
+        "es": "Github - "
     }
 
 }
