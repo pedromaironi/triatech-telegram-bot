@@ -55,4 +55,3 @@ def showDetails(call, idProduct):
 def message_handler(message):
     bot.send_message(message.chat.id, "Productos", reply_markup=gen_markup())
 
-
