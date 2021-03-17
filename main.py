@@ -3,6 +3,9 @@ from config import *
 from start import *
 from help import *
 from products import *
+from contact import *
+from conversation import *
+from category import *
 
 def main_loop():
     bot.polling(True)
