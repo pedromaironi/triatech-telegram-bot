@@ -98,6 +98,14 @@ def count_products():
     collection = base_data[MONGO_COLLECTION]
     return collection.find().count()
 
+def count_categories():
+    MONGO_COLLECTION = 'productos'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    find = {"category":name}
+    return collection.find().count()
+
+# x = count_categories()
 def showInfoProducts():
     MONGO_COLLECTION = 'productos'
     base_data = client[MONGO_BASE_DATA]
@@ -112,7 +120,24 @@ def showDetailsProducts(name):
     find = {"name":name}
     return collection.find_one(find)
 
+def showProductsPerCategory(category):
+    MONGO_COLLECTION = 'productos'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"category":category}
+    return collection.find(find)
 
+def searchCategories():
+    y = showInfoProducts()
+    list_categories = []
+    category = []
+    for k in y:
+        category.append(k['category'])
+        for i in category:
+            if i not in list_categories:
+                list_categories.append(i)
+    return list_categories
 
 
 
