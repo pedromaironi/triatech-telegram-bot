@@ -4,7 +4,7 @@
 #################################################
 #                   BOT TOKEN #
 #################################################
-
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import os
 import telebot
 from telebot import types
@@ -28,7 +28,56 @@ MONGO_PORT = ''
 MONGO_TIME = 0
 MONGO_BASE_DATA = ''
 MONGO_COLLECTION = ''
+markup = InlineKeyboardMarkup()
+markup_category = InlineKeyboardMarkup()
+# It defines how many buttons are fit on each row before continuing on the next row.
+markup1 = types.ReplyKeyboardMarkup(row_width=2)
 
+def gen_markup():
+    x = count_products()
+    # print(str(x))
+    y = showInfoProducts()
+    for k in y:
+        markup_add(k['name'], k['id'])
+    return markup
+
+def gen_markup_pcs():
+    x = count_products()
+    # print(str(x))
+    y = showInfoProducts()
+    for k in y:
+        markup_add(k['name'], k['id'])
+    return markup
+
+def markup_gen():
+    list = searchCategories()
+    data = {}
+    count = 100
+    for k in list:
+        count = count + 1
+        markup_add_category(k, count)
+    return markup_category
+
+
+def markups():
+    list = searchCategories()
+    data = {}
+    count = 100
+    for k in list:
+        count = count + 1
+        items = types.KeyboardButton(k)
+        markup1.add(items)
+        # markup_add_category(k, count)
+
+    # return markup_category
+    return markup1
+
+def markup_add_category(name, name_callback):
+    print("name: " + str(name) + "namec: " + str(name_callback))
+    markup_category.add(InlineKeyboardButton(name, callback_data=name_callback))
+
+def markup_add(name, name_callback):
+    markup.add(InlineKeyboardButton(name, callback_data=name_callback))
 
 #################################################
 #          CONFIG AND METHODS                   #
@@ -62,8 +111,6 @@ except pymongo.errors.ServerSelectionTimeoutError as errorTime:
     print('Time lose: ' + errorTime)
 except pymongo.errors.ConnectionFailure as errorConnection:
     print('Connection: ' + errorConnection)
-
-
 
 def create_user():#id, first_name,last_name,username,language_code
     MONGO_COLLECTION = 'usuarios'
@@ -139,14 +186,16 @@ def searchCategories():
                 list_categories.append(i)
     return list_categories
 
-
-
-
-
-
+def searchProducts_category(category):
+    MONGO_COLLECTION = 'productos'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"category":category}
+    return collection.find(find)
 
 def send_exception(exception):
-    exc_type, exc_obj, exc_tb = sys.exc_info()
+    exc_type, exc_obj, exc_tb = sys.exc_info() 
     tb = traceback.extract_tb(exc_tb, 4)
     message = '\n`' + str(exc_type) + '`'
     message += '\n\n`' + str(exc_obj) + '`'
