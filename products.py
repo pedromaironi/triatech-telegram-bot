@@ -1,25 +1,9 @@
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-
 from config import *
-markup = InlineKeyboardMarkup()
-
-def gen_markup():
-    x = count_products()
-    # print(str(x))
-    y = showInfoProducts()
-    for k in y:
-        markup_add(k['name'], k['id'])
-    return markup
-
-def markup_add(name, name_callback):
-    markup.add(InlineKeyboardButton(name, callback_data=name_callback))
 
 @bot.callback_query_handler(func=lambda call: 'Products')
 def callback_query(call):
-    x = searchCategories()
-    for y in x:
-        print(y)
     if call.data == "1":
+        print('1')
         showDetails(call, "1")
     elif call.data == "2":
         showDetails(call, "2")
@@ -54,4 +38,3 @@ def showDetails(call, idProduct):
 @bot.message_handler(commands=['products'])
 def message_handler(message):
     bot.send_message(message.chat.id, "Productos", reply_markup=gen_markup())
-
