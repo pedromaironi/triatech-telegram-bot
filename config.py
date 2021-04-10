@@ -23,30 +23,32 @@ import random
 from random import choice
 from bson.objectid import ObjectId
 from pprint import pprint
+from datetime import datetime
 MONGO_HOST = ''
 MONGO_PORT = ''
 MONGO_TIME = 0
 MONGO_BASE_DATA = ''
 MONGO_COLLECTION = ''
-markup = InlineKeyboardMarkup()
+# markup = InlineKeyboardMarkup()
 markup_category = InlineKeyboardMarkup()
 # It defines how many buttons are fit on each row before continuing on the next row.
 markup1 = types.ReplyKeyboardMarkup(row_width=2)
 
-def gen_markup():
-    x = count_products()
-    # print(str(x))
-    y = showInfoProducts()
-    for k in y:
-        markup_add(k['name'], k['id'])
-    return markup
+# def gen_markup():
+#     x = count_products()
+#     # print(str(x))
+#     y = showInfoProducts()
+#     for k in y:
+#         markup_add(k['name'], k['id'])
+#     return markup
 
 def gen_markup_pcs():
     x = count_products()
     # print(str(x))
     y = showInfoProducts()
     for k in y:
-        markup_add(k['name'], k['id'])
+        pass
+        # markup_add(k['name'], k['id'])
     return markup
 
 def markup_gen():
@@ -76,8 +78,8 @@ def markup_add_category(name, name_callback):
     print("name: " + str(name) + "namec: " + str(name_callback))
     markup_category.add(InlineKeyboardButton(name, callback_data=name_callback))
 
-def markup_add(name, name_callback):
-    markup.add(InlineKeyboardButton(name, callback_data=name_callback))
+# def markup_add(name, name_callback):
+#     markup.add(InlineKeyboardButton(name, callback_data=name_callback))
 
 #################################################
 #          CONFIG AND METHODS                   #
@@ -193,6 +195,7 @@ def searchProducts_category(category):
     # print(uid)
     find = {"category":category}
     return collection.find(find)
+
 
 def send_exception(exception):
     exc_type, exc_obj, exc_tb = sys.exc_info() 
