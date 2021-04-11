@@ -3,17 +3,20 @@ from random import randint
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
-    print( str(datetime.now().time()) + "\n" + str(datetime.now()))
+    # print( str(datetime.now().time()) + "\n" + str(datetime.now()))
     if call.data == 'x':
-        value = null
-        for x in range(1):
-            value = randint(1000, 9999)
-        print(str(value))
         uid = call.from_user.id
         print(str(uid))
-        x = showInfoUser(uid)
-        responses_me = showInfoUser(uid)
-        bot.send_message(call.message.json['chat']['id'], "asd")
+        isExist = customer_exist(str(212))
+        if isExist != None:
+            x = showInfoUser(uid)
+            responses_me = showInfoUser(uid)
+            bot.send_message(call.message.json['chat']['id'], "asd")
+        else:
+            bot.send_message(call.message.json['chat']['id'], responses['register_customer']['es'])
+    if call.data == 'Country':
+        bot.send_message(call.message.json['chat']['id'], responses['register_customer']['country'])
+
     if call.data == "1":
         print('1')
         showDetails(call, "1")
@@ -56,7 +59,14 @@ def message_handler(message):
     for k in y:
         markup.add(InlineKeyboardButton(k['name'], callback_data=k['id']))
     bot.send_message(message.chat.id, "Productos", reply_markup=markup)
-from random import randint
-# seed random number generator
-seed(1)
-# generate some integers
+
+
+@bot.message_handler(commands=['register'])
+def message_handler(message):
+    list = {"Email","Name", "Age", "Country", "Address 1", "Address 2", "State", "Zip code"}
+    markup = InlineKeyboardMarkup()
+    cont = 0
+    for k in list:
+        print(k)
+        markup.add(InlineKeyboardButton(k, callback_data=k))
+    bot.send_message(message.chat.id, "Registro de Cliente 🚨", reply_markup=markup)

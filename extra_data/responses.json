@@ -63,8 +63,16 @@
     "contact": {
         "es": "Github - "
     },
-    "shop_1": {
-        "es": "SAD"
+    "register_customer": {
+        "es": "Favor registrarse para poder realizar la compra.\nPara registrarse favor escribir /register",
+        "country": "¿Cual es su Region/Pais?",
+        "state": "¿Cual es su Estado",
+        "zip": "¿Cual es su Zip code?\nEjemplo: 51000",
+        "age": "¿Cual es su Edad?",
+        "name": "Su nombre es: ",
+        "email": "¿Cual es su Email?",
+        "address1": "¿Cual es su primer Dirección?",
+        "address2": "¿Cual es su segunda Dirección?"
     }
 
 }

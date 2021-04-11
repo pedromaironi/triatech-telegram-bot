@@ -196,6 +196,26 @@ def searchProducts_category(category):
     find = {"category":category}
     return collection.find(find)
 
+def customer_exist(id):
+    MONGO_COLLECTION = 'clientes'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"id":id}
+    return collection.find_one(find)
+
+def generate_track_code():
+    list = []
+    for x in range(6):
+        value = randint(1000, 9999)
+        list.insert(x,value)
+    list[5] = int(list[5]/100)
+    # print(str(list))
+    track_code = ""
+    for x in list:
+        track_code+=str(x) + " "
+    # print(str(track_code))
+    return track_code
 
 def send_exception(exception):
     exc_type, exc_obj, exc_tb = sys.exc_info() 
