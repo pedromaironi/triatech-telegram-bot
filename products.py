@@ -6,16 +6,57 @@ def callback_query(call):
     # print( str(datetime.now().time()) + "\n" + str(datetime.now()))
     if call.data == 'x':
         uid = call.from_user.id
-        print(str(uid))
-        isExist = customer_exist(str(212))
+        # print(str(uid))
+        isExist = customer_exist(uid)
+        info_null = False
+        data_incomplete = []
+        index = 0
         if isExist != None:
-            x = showInfoUser(uid)
-            responses_me = showInfoUser(uid)
-            bot.send_message(call.message.json['chat']['id'], "asd")
+            responses_me = showInfoCustomer(uid)
+            # with open('extra_data/conditions.json','w') as file:
+            #     json.dump(responses_me, file, ident=4)
+
+            for items in responses_me:
+                index = index + 1
+                x = items
+                if responses_me[x] == "null":
+                    info_null = True
+                    print(info_null)
+                    data_incomplete.insert(index,x)
+                    # print(responses_me[x] + "errir")
         else:
             bot.send_message(call.message.json['chat']['id'], responses['register_customer']['es'])
+
+        print(info_null)
+        if info_null == True:
+            print("asd")
+            info_for_user = "Necesitamos tener todos sus datos para enviar el producto.\n" + "Los siguientes campos debe completarlos correctamente:"
+            print(info_for_user)
+            for item in data_incomplete:
+                print(item)
+                info_for_user = info_for_user + " " + item + ","
+            print(info_for_user)
+            bot.send_message(call.message.json['chat']['id'], info_for_user)
+
+        # print(data_incomplete);
+            # bot.send_message(call.message.json['chat']['id'], "asd")
+
     if call.data == 'Country':
         bot.send_message(call.message.json['chat']['id'], responses['register_customer']['country'])
+    if call.data == 'Age':
+            bot.send_message(call.message.json['chat']['id'], responses['register_customer']['age'])
+    if call.data == 'Name':
+            bot.send_message(call.message.json['chat']['id'], responses['register_customer']['name'])
+    if call.data == 'Zip code':
+            bot.send_message(call.message.json['chat']['id'], responses['register_customer']['zip'])
+    if call.data == 'State':
+            bot.send_message(call.message.json['chat']['id'], responses['register_customer']['state'])
+    if call.data == 'Address 1':
+            bot.send_message(call.message.json['chat']['id'], responses['register_customer']['address1'])
+    if call.data == 'Address 2':
+            bot.send_message(call.message.json['chat']['id'], responses['register_customer']['address2'])
+    if call.data == 'Email':
+            bot.send_message(call.message.json['chat']['id'], responses['register_customer']['email'])
 
     if call.data == "1":
         print('1')

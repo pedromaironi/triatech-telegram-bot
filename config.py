@@ -122,11 +122,27 @@ def create_user():#id, first_name,last_name,username,language_code
         data = json.load(f)
     collection.insert_one(data)
 
+def create_customer():
+    MONGO_COLLECTION = 'clientes'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    with open('extra_data/customer.json') as f:
+        data = json.load(f)
+    collection.insert(data)
+
 def is_user(cid):
     return db.usuarios.find_one(str(cid)) is not None and db.usuarios.find_one(str(cid))['active'] == True
 
 def showInfoUser(uid):
     MONGO_COLLECTION = 'usuarios'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"id":uid}
+    return collection.find_one(find)
+
+def showInfoCustomer(uid):
+    MONGO_COLLECTION = 'clientes'
     base_data = client[MONGO_BASE_DATA]
     collection = base_data[MONGO_COLLECTION]
     # print(uid)
