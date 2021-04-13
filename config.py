@@ -130,6 +130,15 @@ def create_customer():
         data = json.load(f)
     collection.insert(data)
 
+def updateCustomer(uid):
+    MONGO_COLLECTION = 'clientes'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    with open('extra_data/conditions.json') as f:
+        data = json.load(f)
+    find = {"id":uid}
+    collection.update_one(find,{"$set":data}, upsert=True)
+
 def is_user(cid):
     return db.usuarios.find_one(str(cid)) is not None and db.usuarios.find_one(str(cid))['active'] == True
 

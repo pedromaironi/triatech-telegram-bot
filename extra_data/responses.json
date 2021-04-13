@@ -66,13 +66,23 @@
     "register_customer": {
         "es": "Favor registrarse para poder realizar la compra.\nPara registrarse favor escribir /register",
         "country": "¿Cual es su Region/Pais?",
-        "state": "¿Cual es su Estado",
+        "state": "¿Cual es su Estado?",
         "zip": "¿Cual es su Zip code?\nEjemplo: 51000",
         "age": "¿Cual es su Edad?",
         "name": "Su nombre es: ",
         "email": "¿Cual es su Email?",
         "address1": "¿Cual es su primer Dirección?",
         "address2": "¿Cual es su segunda Dirección?"
+    },
+    "register_complete": {
+        "country": "Tu ciudad esta registrada correctamente: ",
+        "state": "Tu stado esta registrado correctamente:",
+        "zip": "Tu zip code esta registrado correctamente:",
+        "age": "Tu edad esta registrada correctamente:",
+        "name": "Su nombre es: ",
+        "email": "Tu email esta registrado correctamente:",
+        "address1": "Tu primer Dirección esta registrada correctamente:",
+        "address2": "Tu segunda Dirección esta registrada correctamente:"
     }
 
 }
