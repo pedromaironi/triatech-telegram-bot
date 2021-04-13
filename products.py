@@ -7,7 +7,7 @@ def callback_query(call):
     # print( str(datetime.now().time()) + "\n" + str(datetime.now()))
     uid = call.from_user.id
     # print(str(uid))
-    responses_me = showInfoCustomer(uid)
+    infoCustomer = showInfoCustomer(uid)
     isExist = customer_exist(uid)
     info_null = False
     data_incomplete = []
@@ -16,19 +16,20 @@ def callback_query(call):
     action = ''
     index = 0
     if call.data == 'x':
+        jsonProduct = call.message.json['caption']
         if isExist != None:
-            for items in responses_me:
+            for items in infoCustomer:
                 index = index + 1
                 x = items
-                if responses_me[x] == "null":
+                if infoCustomer[x] == "null":
                     info_null = True
                     print(info_null)
                     data_incomplete.insert(index,x)
-                    # print(responses_me[x] + "errir")
+                    print(infoCustomer[x] + "errir")
         else:
             bot.send_message(call.message.json['chat']['id'], responses['register_customer']['es'])
 
-        print(info_null)
+        # print(info_null)
         if info_null == True:
             print("asd")
             info_for_user = "Necesitamos tener todos sus datos para enviar el producto.\n" + "Los siguientes campos debe completarlos correctamente:"
@@ -38,94 +39,115 @@ def callback_query(call):
                 info_for_user = info_for_user + " " + item + ","
             print(info_for_user)
             bot.send_message(call.message.json['chat']['id'], info_for_user + "\nUtilice el comando /register para confirmar sus datos")
-
-        # print(data_incomplete);
-            # bot.send_message(call.message.json['chat']['id'], "asd")
+        else:
+            for line in jsonProduct.splitlines():
+                jsonProduct = line
+                break
+            buttons = InlineKeyboardMarkup()
+            list = {"Si", "No"}
+            buttons.add(InlineKeyboardButton("Si", callback_data="Si_comprar"),
+            InlineKeyboardButton("No", callback_data="No_comprar") )
+            bot.send_message(call.message.json['chat']['id'],jsonProduct + "\n" +responses['shop']['line1'], reply_markup=buttons)
+    if call.data == 'Si_comprar':
+        jsonProduct = call.message.json['text']
+        for line in jsonProduct.splitlines():
+                jsonProduct = line
+                break
+        infoCustomer = showInfoCustomer(uid)
+        print(jsonProduct)
+        # print(call)
+        print(infoCustomer)
+    if call.data == 'Mi informacion':
+        infoCustomer = showInfoCustomer(uid)
+        bot.send_message(call.message.json['chat']['id'],
+        responses['information_myself']['name'] + infoCustomer['name'] + "\n" +
+        responses['information_myself']['age'] + infoCustomer['age'] + "\n" +
+        responses['information_myself']['state'] + infoCustomer['state'] + "\n" +
+        responses['information_myself']['country'] + infoCustomer['country'] + "\n" +
+        responses['information_myself']['address1'] + infoCustomer['address_1'] + "\n" +
+        responses['information_myself']['address2'] + infoCustomer['address_2'] + "\n" +
+        responses['information_myself']['email'] + infoCustomer['email'] + "\n" +
+        responses['information_myself']['zip'] + infoCustomer['zip_code']
+        )
     if call.data == 'save_country':
         sendto = types.ForceReply(selective=True)
         bot.send_message(call.message.json['chat']['id'], responses['register_customer']['country'], reply_markup=sendto)
-
     if call.data == 'save_state':
         sendto = types.ForceReply(selective=True)
         bot.send_message(call.message.json['chat']['id'], responses['register_customer']['state'], reply_markup=sendto)
-
     if call.data == 'save_email':
         sendto = types.ForceReply(selective=True)
         bot.send_message(call.message.json['chat']['id'], responses['register_customer']['email'], reply_markup=sendto)
-
     if call.data == 'save_age':
         sendto = types.ForceReply(selective=True)
         bot.send_message(call.message.json['chat']['id'], responses['register_customer']['age'], reply_markup=sendto)
-
     if call.data == 'save_zip_code':
         sendto = types.ForceReply(selective=True)
         bot.send_message(call.message.json['chat']['id'], responses['register_customer']['zip'], reply_markup=sendto)
-
     if call.data == 'save_address_1':
         sendto = types.ForceReply(selective=True)
         bot.send_message(call.message.json['chat']['id'], responses['register_customer']['address1'], reply_markup=sendto)
-
     if call.data == 'save_address_2':
         sendto = types.ForceReply(selective=True)
         bot.send_message(call.message.json['chat']['id'], responses['register_customer']['address2'], reply_markup=sendto)
 
     if call.data == 'Country':
-        if responses_me['country'] == "null":
+        if infoCustomer['country'] == "null":
             band_action = True
             save = 'save_'+'country'
             action = "Ciudad/Región\nClick en Guardar\nInserta el campo. Example: Santiago de los caballeros"
         else:
-            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['country'] + responses_me['country'])
+            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['country'] + infoCustomer['country'])
     if call.data == 'Age':
-        if responses_me['age'] == "null":
+        if infoCustomer['age'] == "null":
             band_action = True
             save = 'save_'+'age'
             action = "Edad\nClick en Guardar\nInserta el campo. Example: 21"
         else:
-            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['age'] + responses_me['age'])
+            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['age'] + infoCustomer['age'])
     if call.data == 'Name':
-        if responses_me['name'] == "null":
+        if infoCustomer['name'] == "null":
             band_action = True
             save = 'save_'+'name'
             action = "Nombre y Apellido\nClick en Guardar\nInserta el campo. Example: Pedro"
         else:
-            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['name'] + responses_me['name'])
+            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['name'] + infoCustomer['name'])
     if call.data == 'Zip code':
-        if responses_me['zip_code'] == "null":
+        if infoCustomer['zip_code'] == "null":
             band_action = True
             save = 'save_'+'zip_code'
             action = "Zip code\nClick en Guardar\nInserta el campo. Example: 51000"
         else:
-            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['zip'] + responses_me['zip_code'])
+            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['zip'] + infoCustomer['zip_code'])
     if call.data == 'State':
-        if responses_me['state'] == "null":
+        if infoCustomer['state'] == "null":
             band_action = True
             save = 'save_'+'state'
             action = "Estado \nClick en Guardar\nInserta el campo. Example: Cibao"
         else:
-            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['state'] + responses_me['state'])
+            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['state'] + infoCustomer['state'])
     if call.data == 'Address1':
-        if responses_me['address_1'] == "null":
+        if infoCustomer['address_1'] == "null":
             band_action = True
             save = 'save_'+'address_1'
             action = "Primera Direccion\nClick en Guardar\nInserta el campo. Example: Mella 85"
         else:
-            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['address1'] + responses_me['address_1'])
+            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['address1'] + infoCustomer['address_1'])
     if call.data == 'Address2':
-        if responses_me['address_2'] == "null":
+        if infoCustomer['address_2'] == "null":
             band_action = True
             save = 'save_'+'address_2'
             action = "Segunda Direccion\nClick en Guardar\nInserta el campo. Example: Navarrete,villa bisono"
         else:
-            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['address2'] + responses_me['address_2'])
+            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['address2'] + infoCustomer['address_2'])
     if call.data == 'Email':
-        if responses_me['email'] == "null":
+        if infoCustomer['email'] == "null":
             band_action = True
             save = 'save_'+'email'
             action = "Email\nClick en Guardar\nInserta el campo. Example: correo@hotmail.com"
         else:
-            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['email'] + responses_me['email'])
-    
+            bot.send_message(call.message.json['chat']['id'], responses['register_complete']['email'] + infoCustomer['email'])
+
     if band_action == True:
         send_action_to_user(call, action,save)
 
@@ -175,7 +197,7 @@ def message_handler(message):
 
 @bot.message_handler(commands=['register'])
 def message_handler(message):
-    list = {"Email","Name", "Age", "Country", "Address1", "Address2", "State", "Zip code"}
+    list = {"Email","Name", "Age", "Country", "Address1", "Address2", "State", "Zip code", 'Mi informacion'}
     markup = InlineKeyboardMarkup()
     cont = 0
     for k in list:

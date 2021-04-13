@@ -1,0 +1,11 @@
+{
+    "name_custumer": "pedro maironi toribio",
+    "shipment_no": "1234567898",
+    "name_product": "Computadora",
+    "description": "Una computadora de mesa",
+    "category_product": "computadoras",
+    "date_sale": "2021-04-10 19:12:04.655176:",
+    "date_delivered": "2021-04-25",
+    "track_code": "9400 1000 0000 0000 0000 00",
+    "total_paid": "27000"
+}

@@ -76,13 +76,28 @@
     },
     "register_complete": {
         "country": "Tu ciudad esta registrada correctamente: ",
-        "state": "Tu stado esta registrado correctamente:",
+        "state": "Tu estado esta registrado correctamente:",
         "zip": "Tu zip code esta registrado correctamente:",
         "age": "Tu edad esta registrada correctamente:",
         "name": "Su nombre es: ",
         "email": "Tu email esta registrado correctamente:",
         "address1": "Tu primer Dirección esta registrada correctamente:",
         "address2": "Tu segunda Dirección esta registrada correctamente:"
+    },
+    "shop": {
+        "line1": "¿Seguro que quiere realizar esta compra?",
+        "line2": "Enviaremos el producto: ",
+        "line3": "A la siguiente direccion: "
+    },
+    "information_myself": {
+        "country": "Ciudad: ",
+        "state": "Estado:",
+        "zip": "Zip code:",
+        "age": "Edad:",
+        "name": "Nombre: ",
+        "email": "Email:",
+        "address1": "Primer Dirección:",
+        "address2": "Segunda Dirección:"
     }
 
 }

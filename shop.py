@@ -13,7 +13,7 @@ def add_price(name, name_callback):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
     if call.data == 'x':
-        print(call)
+        print('fggggggggggggggg')
 
 @bot.message_handler(commands=['shop'])
 def message_handler(message):
@@ -29,10 +29,10 @@ def message_handler(message):
         price = details['price']
         url = details['image']
         categoria = details['category']
-        keyboard=json.dumps({ "inline_keyboard": [ [ {"text": 'DOP' + details['price'], "callback_data": "x"} ] ] })
+        keyboard=json.dumps({ "inline_keyboard": [ [ {"text": 'DOP ' + details['price'], "callback_data": "x"} ] ] })
         # print(keyboard)
         markups = types.InlineKeyboardMarkup()
-        markups.add(types.InlineKeyboardButton(text='DOP'+ details['price'], callback_data='x'))
+        markups.add(types.InlineKeyboardButton(text=details['name'] + ' ' + details['price'] + ' DOP ', callback_data='x'))
         response_products = name_of_product + "\n" + details_product + "\n" + "Precio: $" + price + '\n'
         bot.send_photo(message.chat.id, photo=url, caption=response_products, reply_markup=markups)
 
