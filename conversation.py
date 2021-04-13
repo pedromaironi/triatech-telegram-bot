@@ -86,12 +86,12 @@ def handle_messages(Message):
                     conditions[i] = Message.json['text']
                 if i == 'id':
                     customer_id = conditions[i]
-        print(str(customer_id))
-        data_user = conditions
-        with open('extra_data/conditions.json', 'w') as f:
-            json.dump(data_user, f)
-        updateCustomer(customer_id)
-        bot.send_message(Message.chat.id, "Zip code registrado correctamente")
+            print(str(customer_id))
+            data_user = conditions
+            with open('extra_data/conditions.json', 'w') as f:
+                json.dump(data_user, f)
+            updateCustomer(customer_id)
+            bot.send_message(Message.chat.id, "Zip code registrado correctamente")
 
         if Message.reply_to_message.json['text'] == responses['register_customer']['age']:
             object_ = 'age'
@@ -129,7 +129,7 @@ def handle_messages(Message):
             updateCustomer(customer_id)
             bot.send_message(Message.chat.id, "Email:" + Message.json['text'] + " registrado correctamente")
             
-        if Message.reply_to_message.json['text'] == responses['register_customer']['email']:
+        if Message.reply_to_message.json['text'] == responses['register_customer']['age']:
             object_ = 'age'
             customer_id = 0
             conditions = {}

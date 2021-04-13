@@ -137,6 +137,7 @@ def updateCustomer(uid):
     with open('extra_data/conditions.json') as f:
         data = json.load(f)
     find = {"id":uid}
+    print(data)
     collection.update_one(find,{"$set":data}, upsert=True)
 
 def is_user(cid):
