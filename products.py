@@ -53,52 +53,67 @@ def callback_query(call):
         sendto = types.ForceReply(selective=True)
         bot.send_message(call.message.json['chat']['id'], responses['register_customer']['email'], reply_markup=sendto)
 
-    if call.data == 'save_state':
+    if call.data == 'save_age':
         sendto = types.ForceReply(selective=True)
-        bot.send_message(call.message.json['chat']['id'], responses['register_customer']['state'], reply_markup=sendto)
+        bot.send_message(call.message.json['chat']['id'], responses['register_customer']['age'], reply_markup=sendto)
 
-    if call.data == 'save_state':
+    if call.data == 'save_zip_code':
         sendto = types.ForceReply(selective=True)
-        bot.send_message(call.message.json['chat']['id'], responses['register_customer']['state'], reply_markup=sendto)
+        bot.send_message(call.message.json['chat']['id'], responses['register_customer']['zip'], reply_markup=sendto)
+
+    if call.data == 'save_address_1':
+        sendto = types.ForceReply(selective=True)
+        bot.send_message(call.message.json['chat']['id'], responses['register_customer']['address1'], reply_markup=sendto)
+
+    if call.data == 'save_address_2':
+        sendto = types.ForceReply(selective=True)
+        bot.send_message(call.message.json['chat']['id'], responses['register_customer']['address2'], reply_markup=sendto)
 
     if call.data == 'Country':
         if responses_me['country'] == "null":
+            band_action = True
             save = 'save_'+'country'
             action = "Ciudad/Región\nClick en Guardar\nInserta el campo. Example: Santiago de los caballeros"
         else:
             bot.send_message(call.message.json['chat']['id'], responses['register_complete']['country'] + responses_me['country'])
     if call.data == 'Age':
         if responses_me['age'] == "null":
+            band_action = True
             save = 'save_'+'age'
             action = "Edad\nClick en Guardar\nInserta el campo. Example: 21"
         else:
             bot.send_message(call.message.json['chat']['id'], responses['register_complete']['age'] + responses_me['age'])
     if call.data == 'Name':
         if responses_me['name'] == "null":
+            band_action = True
             save = 'save_'+'name'
             action = "Nombre y Apellido\nClick en Guardar\nInserta el campo. Example: Pedro"
         else:
             bot.send_message(call.message.json['chat']['id'], responses['register_complete']['name'] + responses_me['name'])
     if call.data == 'Zip code':
         if responses_me['zip_code'] == "null":
+            band_action = True
             save = 'save_'+'zip_code'
             action = "Zip code\nClick en Guardar\nInserta el campo. Example: 51000"
         else:
             bot.send_message(call.message.json['chat']['id'], responses['register_complete']['zip'] + responses_me['zip_code'])
     if call.data == 'State':
         if responses_me['state'] == "null":
+            band_action = True
             save = 'save_'+'state'
             action = "Estado \nClick en Guardar\nInserta el campo. Example: Cibao"
         else:
             bot.send_message(call.message.json['chat']['id'], responses['register_complete']['state'] + responses_me['state'])
-    if call.data == 'Address 1':
+    if call.data == 'Address1':
         if responses_me['address_1'] == "null":
+            band_action = True
             save = 'save_'+'address_1'
             action = "Primera Direccion\nClick en Guardar\nInserta el campo. Example: Mella 85"
         else:
             bot.send_message(call.message.json['chat']['id'], responses['register_complete']['address1'] + responses_me['address_1'])
-    if call.data == 'Address 2':
+    if call.data == 'Address2':
         if responses_me['address_2'] == "null":
+            band_action = True
             save = 'save_'+'address_2'
             action = "Segunda Direccion\nClick en Guardar\nInserta el campo. Example: Navarrete,villa bisono"
         else:
@@ -160,7 +175,7 @@ def message_handler(message):
 
 @bot.message_handler(commands=['register'])
 def message_handler(message):
-    list = {"Email","Name", "Age", "Country", "Address 1", "Address 2", "State", "Zip code"}
+    list = {"Email","Name", "Age", "Country", "Address1", "Address2", "State", "Zip code"}
     markup = InlineKeyboardMarkup()
     cont = 0
     for k in list:
