@@ -150,6 +150,22 @@ def updateCustomer(uid):
     print(data)
     collection.update_one(find,{"$set":data}, upsert=True)
 
+def QueryInfoShopping(uid):
+    MONGO_COLLECTION = 'ventas'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"idCustomer":uid}
+    return collection.find({"idCustomer":uid})
+
+def QueryInfoShoppingCount(uid):
+    MONGO_COLLECTION = 'ventas'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"idCustomer":uid}
+    return collection.count({"idCustomer":uid})
+
 def is_user(cid):
     return db.usuarios.find_one(str(cid)) is not None and db.usuarios.find_one(str(cid))['active'] == True
 

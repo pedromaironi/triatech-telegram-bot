@@ -15,6 +15,21 @@ def callback_query(call):
     save = ''
     action = ''
     index = 0
+    if call.data == 'my_sales':
+        quantity = QueryInfoShoppingCount(uid)
+        print(quantity)
+        sales_information = QueryInfoShopping(uid)
+        sales_buttons = InlineKeyboardMarkup()
+        for amount in range(quantity):
+            sales = sales_information.next()
+            for items_ in sales:
+                if items_ == 'name_product':
+                    print(sales[items_])
+                    name_product_query = sales[items_]
+                    details_of_product = showDetailsProducts(name_product_query)
+                    image = details_of_product['image']
+                    sales_buttons.add(InlineKeyboardButton(name_product_query, callback_data=name_product_query))
+        bot.send_message(call.message.json['chat']['id'], "Sales🚨", reply_markup='sales')
     if call.data == 'x':
         jsonProduct = call.message.json['caption']
         if isExist != None:
@@ -263,6 +278,12 @@ def message_handler(message):
         print(k + " " + k)
         markup.add(InlineKeyboardButton(k, callback_data=k))
     bot.send_message(message.chat.id, "Registro de Cliente 🚨", reply_markup=markup)
+
+@bot.message_handler(commands=['shopping'])
+def message_handler(message):
+    options = InlineKeyboardMarkup()
+    options.add(InlineKeyboardButton("Mi informacion", callback_data='Mi informacion'), InlineKeyboardButton("Mis compras", callback_data='my_sales'))
+    bot.send_message(message.chat.id, "Shopping🚨", reply_markup=options)
 
 def send_action_to_user(call,type_action,save):
      # while True:
