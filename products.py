@@ -3,8 +3,21 @@ from config import *
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
-    # print(call.message.json['reply_markup']['inline_keyboard'])
-    # print( str(datetime.now().date() + timedelta(days=15)) + "\n" + str(datetime.now()))
+
+    # Quantity of products with names
+    list_callbacks_sales = []
+    all_names_products = showInfoProducts()
+    query_quantity_products = cantProducts()
+    for x in range(query_quantity_products):
+        products_names_query = all_names_products.next()
+        for items in products_names_query:
+            # print(items)
+            if items == 'name':
+                list_callbacks_sales.append(products_names_query[items])
+
+
+    # Variables
+    sales_buttons = InlineKeyboardMarkup()
     uid = call.from_user.id
     # print(str(uid))
     infoCustomer = showInfoCustomer(uid)
@@ -15,21 +28,32 @@ def callback_query(call):
     save = ''
     action = ''
     index = 0
+    for items in list_callbacks_sales:
+        # print(items)
+        if call.data == items:
+            print(call.data)
+            name_product_sale = ''
+            details_sales = {}
+            details_sales = QueryInfoShoppingProduct(items)
+            product_n = details_sales['name_product']
+            details_of_product_query = showDetailsProducts(product_n)
+            message = responses['shop']['info_shop']['info'] + "\n" + responses['shop']['info_shop']['name_customer'] + details_sales['name_customer'] + "\n" + responses['shop']['info_shop']['ship'] + details_sales['shipment_no'] + "\n" +responses['shop']['info_shop']['name_product'] + details_sales['name_product'] + "\n" +responses['shop']['info_shop']['Fecha_compra'] + details_sales['date_sale'] + "\n" +responses['shop']['info_shop']['date_delivered'] + details_sales['date_delivered'] + "\n" +responses['shop']['info_shop']['track_code'] + details_sales['track_code'] + "\n" +responses['shop']['info_shop']['total_paid'] + details_sales['total_paid']
+            bot.send_photo(chat_id=call.message.json['chat']['id'], photo=details_of_product_query['image'], caption=message)
+
+    # Sales info
     if call.data == 'my_sales':
         quantity = QueryInfoShoppingCount(uid)
         print(quantity)
         sales_information = QueryInfoShopping(uid)
-        sales_buttons = InlineKeyboardMarkup()
         for amount in range(quantity):
             sales = sales_information.next()
             for items_ in sales:
                 if items_ == 'name_product':
-                    print(sales[items_])
+                    # print(sales[items_])
                     name_product_query = sales[items_]
-                    details_of_product = showDetailsProducts(name_product_query)
-                    image = details_of_product['image']
                     sales_buttons.add(InlineKeyboardButton(name_product_query, callback_data=name_product_query))
-        bot.send_message(call.message.json['chat']['id'], "Sales🚨", reply_markup='sales')
+        bot.send_chat_action(call.message.json['chat']['id'], 'typing')
+        bot.send_message(call.message.json['chat']['id'], "Sales🚨", reply_markup=sales_buttons)
     if call.data == 'x':
         jsonProduct = call.message.json['caption']
         if isExist != None:
@@ -284,6 +308,16 @@ def message_handler(message):
     options = InlineKeyboardMarkup()
     options.add(InlineKeyboardButton("Mi informacion", callback_data='Mi informacion'), InlineKeyboardButton("Mis compras", callback_data='my_sales'))
     bot.send_message(message.chat.id, "Shopping🚨", reply_markup=options)
+
+def send_action_to_customer(call,type_action,save):
+     # while True:
+                # bot.send_message(call.message.json['chat']['id'], responses['register_customer']['country'])
+    menu_register = types.InlineKeyboardMarkup()
+    btn_save = types.InlineKeyboardButton('Guardar', callback_data=save)
+    menu_register.row(btn_save)
+    bot.send_chat_action(call.message.chat.id, 'typing')
+    msg = bot.send_message(call.from_user.id, type_action,
+    parse_mode='HTML', reply_markup=menu_register)
 
 def send_action_to_user(call,type_action,save):
      # while True:

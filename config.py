@@ -157,6 +157,15 @@ def QueryInfoShopping(uid):
     # print(uid)
     find = {"idCustomer":uid}
     return collection.find({"idCustomer":uid})
+    
+
+def QueryInfoShoppingProduct(uid):
+    MONGO_COLLECTION = 'ventas'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"name_product":uid}
+    return collection.find_one(find)
 
 def QueryInfoShoppingCount(uid):
     MONGO_COLLECTION = 'ventas'
@@ -220,6 +229,12 @@ def showDetailsProducts(name):
     # print(uid)
     find = {"name":name}
     return collection.find_one(find)
+
+def cantProducts():
+    MONGO_COLLECTION = 'productos'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    return collection.count()
 
 def showProductsPerCategory(category):
     MONGO_COLLECTION = 'productos'
