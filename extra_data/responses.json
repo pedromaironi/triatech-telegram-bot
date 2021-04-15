@@ -86,18 +86,30 @@
     },
     "shop": {
         "line1": "¿Seguro que quiere realizar esta compra?",
-        "line2": "Enviaremos el producto: ",
-        "line3": "A la siguiente direccion: "
+        "line2": "Esta es la dirección de envío: ",
+        "line3": "A la siguiente direccion: ",
+        "info_shop": {
+            "info": "Esta es la informacion de la compra.",
+            "name_customer": "A nombre de: ",
+            "ship": "Numero de shipment: ",
+            "name_product": "Producto: ",
+            "description": "Descripcion: ",
+            "category": "Pertenece a la categoria: ",
+            "total_paid": "Total pagado: ",
+            "Fecha_compra": "Fecha de la compra: ",
+            "date_delivered": "Fecha de la llegada: ",
+            "track_code": "Puedes utilizar el track code para saber donde se encuentra el producto: "
+        }
     },
     "information_myself": {
         "country": "Ciudad: ",
-        "state": "Estado:",
-        "zip": "Zip code:",
-        "age": "Edad:",
+        "state": "Estado: ",
+        "zip": "Zip code: ",
+        "age": "Edad: ",
         "name": "Nombre: ",
-        "email": "Email:",
-        "address1": "Primer Dirección:",
-        "address2": "Segunda Dirección:"
+        "email": "Email: ",
+        "address1": "Primer Dirección: ",
+        "address2": "Segunda Dirección: "
     }
 
 }

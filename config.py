@@ -9,6 +9,8 @@ import os
 import telebot
 from telebot import types
 from colorclass import Color
+from random import randint
+from datetime import timedelta
 import json
 import time
 import six

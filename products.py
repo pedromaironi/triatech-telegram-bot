@@ -1,10 +1,11 @@
 from config import *
 from random import randint
+from datetime import timedelta
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
     # print(call.message.json['reply_markup']['inline_keyboard'])
-    # print( str(datetime.now().time()) + "\n" + str(datetime.now()))
+    # print( str(datetime.now().date() + timedelta(days=15)) + "\n" + str(datetime.now()))
     uid = call.from_user.id
     # print(str(uid))
     infoCustomer = showInfoCustomer(uid)
@@ -40,23 +41,65 @@ def callback_query(call):
             print(info_for_user)
             bot.send_message(call.message.json['chat']['id'], info_for_user + "\nUtilice el comando /register para confirmar sus datos")
         else:
+            cont = 0
+            total_paid = ''
             for line in jsonProduct.splitlines():
-                jsonProduct = line
-                break
+                cont = cont + 1
+                # print(cont)
+                # print(line)
+                if cont == 1:
+                    jsonProduct = line
+                elif cont == 3:
+                    total_paid = line
+                elif cont == 4:
+                    break
             buttons = InlineKeyboardMarkup()
             list = {"Si", "No"}
             buttons.add(InlineKeyboardButton("Si", callback_data="Si_comprar"),
             InlineKeyboardButton("No", callback_data="No_comprar") )
-            bot.send_message(call.message.json['chat']['id'],jsonProduct + "\n" +responses['shop']['line1'], reply_markup=buttons)
+            bot.send_message(call.message.json['chat']['id'],jsonProduct + "\n" + total_paid + "\n" + responses['shop']['line1'], reply_markup=buttons)
     if call.data == 'Si_comprar':
+        cont = 0
         jsonProduct = call.message.json['text']
+        total_paid = ''
         for line in jsonProduct.splitlines():
+            cont = cont + 1
+            if cont == 1:
                 jsonProduct = line
-                break
-        infoCustomer = showInfoCustomer(uid)
+            if cont == 2:
+                total_paid = line.replace("Precio: ", "")
         print(jsonProduct)
-        # print(call)
-        print(infoCustomer)
+        # details_product = showInfoProducts(jsonProduct)
+        print(total_paid)
+        infoCustomer = showInfoCustomer(uid)
+        # print(infoCustomer)
+        details = showDetailsProducts(jsonProduct)
+        description_product = details['detail']
+        category_product = details['category']
+        no_shipment = random.randint(100000000,200000000)
+        date_sale = str(datetime.now().date())
+        date_delivered = str(datetime.now().date() + timedelta(days=15))
+        track_code = generate_track_code()
+        information_sale = {infoCustomer['name'], str(no_shipment), jsonProduct, description_product, category_product, date_sale, date_delivered, track_code}
+        print(information_sale)
+        bot.send_message(call.message.json['chat']['id'],
+        responses['shop']['info_shop']['info'] + "\n" +
+        responses['shop']['info_shop']['name_customer'] + infoCustomer['name'] + "\n" +
+        responses['shop']['info_shop']['ship'] + str(no_shipment) + "\n" +
+        responses['shop']['info_shop']['name_product'] + jsonProduct + "\n" +
+        responses['shop']['info_shop']['Fecha_compra'] + date_sale + "\n" +
+        responses['shop']['info_shop']['date_delivered'] + date_delivered + "\n" +
+        responses['shop']['info_shop']['track_code'] + track_code + "\n" +
+        responses['shop']['info_shop']['total_paid'] + total_paid + "\n" +
+        responses['shop']['line2'] + "\n" +
+        responses['information_myself']['state'] + infoCustomer['state'] + "\n" +
+        responses['information_myself']['country'] + infoCustomer['country'] + "\n" +
+        responses['information_myself']['address1'] + infoCustomer['address_1'] + "\n" +
+        responses['information_myself']['address2'] + infoCustomer['address_2'] + "\n" +
+        responses['information_myself']['email'] + infoCustomer['email'] + "\n" +
+        responses['information_myself']['zip'] + infoCustomer['zip_code']
+        )
+
     if call.data == 'Mi informacion':
         infoCustomer = showInfoCustomer(uid)
         bot.send_message(call.message.json['chat']['id'],
