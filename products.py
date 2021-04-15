@@ -1,6 +1,5 @@
 from config import *
-from random import randint
-from datetime import timedelta
+
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
@@ -80,8 +79,25 @@ def callback_query(call):
         date_sale = str(datetime.now().date())
         date_delivered = str(datetime.now().date() + timedelta(days=15))
         track_code = generate_track_code()
-        information_sale = {infoCustomer['name'], str(no_shipment), jsonProduct, description_product, category_product, date_sale, date_delivered, track_code}
+        information_sale = {
+        "idCustomer": infoCustomer['id'],
+        'name_customer':infoCustomer['name'],
+        'shipment_no':str(no_shipment),
+        'name_product':jsonProduct,
+        'description':description_product,
+        'category_product': category_product,
+        'date_sale':date_sale,
+        'date_delivered': date_delivered,
+        'track_code':track_code,
+        'total_paid':total_paid
+        }
+
+        with open('extra_data/information_sale.json', 'w') as f:
+            json.dump(information_sale, f)
         print(information_sale)
+
+        # Create sale
+        create_sale()
         bot.send_message(call.message.json['chat']['id'],
         responses['shop']['info_shop']['info'] + "\n" +
         responses['shop']['info_shop']['name_customer'] + infoCustomer['name'] + "\n" +

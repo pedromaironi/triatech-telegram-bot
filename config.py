@@ -124,13 +124,21 @@ def create_user():#id, first_name,last_name,username,language_code
         data = json.load(f)
     collection.insert_one(data)
 
+def create_sale():
+    MONGO_COLLECTION = 'ventas'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    with open('extra_data/information_sale.json') as f:
+        data = json.load(f)
+    collection.insert_one(data)
+
 def create_customer():
     MONGO_COLLECTION = 'clientes'
     base_data = client[MONGO_BASE_DATA]
     collection = base_data[MONGO_COLLECTION]
     with open('extra_data/customer.json') as f:
         data = json.load(f)
-    collection.insert(data)
+    collection.insert_one(data)
 
 def updateCustomer(uid):
     MONGO_COLLECTION = 'clientes'
