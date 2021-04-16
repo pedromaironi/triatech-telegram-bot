@@ -5,6 +5,7 @@
 #                   BOT TOKEN #
 #################################################
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+import smtplib
 import os
 import telebot
 from telebot import types

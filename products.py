@@ -1,5 +1,5 @@
 from config import *
-
+from emails import sendEmail
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
@@ -31,14 +31,39 @@ def callback_query(call):
     for items in list_callbacks_sales:
         # print(items)
         if call.data == items:
+            infoCustomer = showInfoCustomer(uid)
             print(call.data)
             name_product_sale = ''
             details_sales = {}
             details_sales = QueryInfoShoppingProduct(items)
             product_n = details_sales['name_product']
             details_of_product_query = showDetailsProducts(product_n)
+            buttons_options_to_declined_product = InlineKeyboardMarkup()
+            buttons_options_to_declined_product.add(
+                InlineKeyboardButton("Cancelar pedido", callback_data="cancel_order"),
+                InlineKeyboardButton("Okay", callback_data="ok_order")
+                )
             message = responses['shop']['info_shop']['info'] + "\n" + responses['shop']['info_shop']['name_customer'] + details_sales['name_customer'] + "\n" + responses['shop']['info_shop']['ship'] + details_sales['shipment_no'] + "\n" +responses['shop']['info_shop']['name_product'] + details_sales['name_product'] + "\n" +responses['shop']['info_shop']['Fecha_compra'] + details_sales['date_sale'] + "\n" +responses['shop']['info_shop']['date_delivered'] + details_sales['date_delivered'] + "\n" +responses['shop']['info_shop']['track_code'] + details_sales['track_code'] + "\n" +responses['shop']['info_shop']['total_paid'] + details_sales['total_paid']
-            bot.send_photo(chat_id=call.message.json['chat']['id'], photo=details_of_product_query['image'], caption=message)
+            info_email = {}
+            with open('extra_data/email.json', 'r') as file:
+                info_email = json.load(file)
+            sendEmail(info_email['email'], info_email['password'], message, infoCustomer['email'])
+            bot.send_photo(chat_id=call.message.json['chat']['id'], photo=details_of_product_query['image'], caption=message, reply_markup=buttons_options_to_declined_product)
+
+    if call.data == 'cancel_order':
+        # print(call.message.caption)
+        message_caption = call.message.caption
+        cont = 0
+        cancel_nameProduct = ''
+        for lines in message_caption.splitlines():
+            print(lines)
+            cont = cont + 1
+            if cont == 4:
+                cancel_nameProduct = lines.replace('Producto: ', "")
+        details_of_sale = showInfoSa
+    if call.data == 'ok_order':
+        message = responses['shop']['success']
+        bot.send_photo(chat_id=call.message.json['chat']['id'], photo='https://cdn.dribbble.com/users/1751799/screenshots/5512482/check02.gif', caption=message)
 
     # Sales info
     if call.data == 'my_sales':
@@ -308,16 +333,6 @@ def message_handler(message):
     options = InlineKeyboardMarkup()
     options.add(InlineKeyboardButton("Mi informacion", callback_data='Mi informacion'), InlineKeyboardButton("Mis compras", callback_data='my_sales'))
     bot.send_message(message.chat.id, "Shopping🚨", reply_markup=options)
-
-def send_action_to_customer(call,type_action,save):
-     # while True:
-                # bot.send_message(call.message.json['chat']['id'], responses['register_customer']['country'])
-    menu_register = types.InlineKeyboardMarkup()
-    btn_save = types.InlineKeyboardButton('Guardar', callback_data=save)
-    menu_register.row(btn_save)
-    bot.send_chat_action(call.message.chat.id, 'typing')
-    msg = bot.send_message(call.from_user.id, type_action,
-    parse_mode='HTML', reply_markup=menu_register)
 
 def send_action_to_user(call,type_action,save):
      # while True:
