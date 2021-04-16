@@ -5,3 +5,4 @@ def sendEmail(email, password, message, email_receptor):
     server.login(email, password)
     # server.sendmail("from", "to", "message")
     server.sendmail(email, email_receptor, message)
+    server.quit()

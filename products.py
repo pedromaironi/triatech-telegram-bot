@@ -1,9 +1,11 @@
 from config import *
 from emails import sendEmail
-
+import datetime
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
 
+    now = datetime.datetime.now()
+    print(now.date()+timedelta(days=15))
     # Quantity of products with names
     list_callbacks_sales = []
     all_names_products = showInfoProducts()
@@ -44,10 +46,7 @@ def callback_query(call):
                 InlineKeyboardButton("Okay", callback_data="ok_order")
                 )
             message = responses['shop']['info_shop']['info'] + "\n" + responses['shop']['info_shop']['name_customer'] + details_sales['name_customer'] + "\n" + responses['shop']['info_shop']['ship'] + details_sales['shipment_no'] + "\n" +responses['shop']['info_shop']['name_product'] + details_sales['name_product'] + "\n" +responses['shop']['info_shop']['Fecha_compra'] + details_sales['date_sale'] + "\n" +responses['shop']['info_shop']['date_delivered'] + details_sales['date_delivered'] + "\n" +responses['shop']['info_shop']['track_code'] + details_sales['track_code'] + "\n" +responses['shop']['info_shop']['total_paid'] + details_sales['total_paid']
-            info_email = {}
-            with open('extra_data/email.json', 'r') as file:
-                info_email = json.load(file)
-            sendEmail(info_email['email'], info_email['password'], message, infoCustomer['email'])
+           
             bot.send_photo(chat_id=call.message.json['chat']['id'], photo=details_of_product_query['image'], caption=message, reply_markup=buttons_options_to_declined_product)
 
     if call.data == 'cancel_order':
@@ -56,11 +55,15 @@ def callback_query(call):
         cont = 0
         cancel_nameProduct = ''
         for lines in message_caption.splitlines():
-            print(lines)
+            # print(lines)
             cont = cont + 1
             if cont == 4:
                 cancel_nameProduct = lines.replace('Producto: ', "")
-        details_of_sale = showInfoSa
+        print(cancel_nameProduct)
+        details_of_sale = QueryInfoShoppingPerProduct(cancel_nameProduct)
+        for items_ in details_of_sale:
+            print(items_)
+        # print(details_of_sale)
     if call.data == 'ok_order':
         message = responses['shop']['success']
         bot.send_photo(chat_id=call.message.json['chat']['id'], photo='https://cdn.dribbble.com/users/1751799/screenshots/5512482/check02.gif', caption=message)
@@ -140,8 +143,9 @@ def callback_query(call):
         description_product = details['detail']
         category_product = details['category']
         no_shipment = random.randint(100000000,200000000)
-        date_sale = str(datetime.now().date())
-        date_delivered = str(datetime.now().date() + timedelta(days=15))
+        now = datetime.datetime.now()
+        date_sale = str(now)
+        date_delivered = str(now.date()+timedelta(days=15))
         track_code = generate_track_code()
         information_sale = {
         "idCustomer": infoCustomer['id'],
@@ -159,25 +163,15 @@ def callback_query(call):
         with open('extra_data/information_sale.json', 'w') as f:
             json.dump(information_sale, f)
         print(information_sale)
-
+        info_email = {}
+        with open('extra_data/email.json', 'r') as file:
+            info_email = json.load(file)
         # Create sale
         create_sale()
+        message = responses['shop']['info_shop']['info'] + "\n" +responses['shop']['info_shop']['name_customer'] + infoCustomer['name'] + "\n" +responses['shop']['info_shop']['ship'] + str(no_shipment) + "\n" +responses['shop']['info_shop']['name_product'] + jsonProduct + "\n" +responses['shop']['info_shop']['Fecha_compra'] + date_sale + "\n" +responses['shop']['info_shop']['date_delivered'] + date_delivered + "\n" +responses['shop']['info_shop']['track_code'] + track_code + "\n" +responses['shop']['info_shop']['total_paid'] + total_paid + "\n" +responses['shop']['line2'] + "\n" +responses['information_myself']['state'] + infoCustomer['state'] + "\n" +responses['information_myself']['country'] + infoCustomer['country'] + "\n" +responses['information_myself']['address1'] + infoCustomer['address_1'] + "\n" +responses['information_myself']['address2'] + infoCustomer['address_2'] + "\n" +responses['information_myself']['email'] + infoCustomer['email'] + "\n" +responses['information_myself']['zip'] + infoCustomer['zip_code']
+        sendEmail(info_email['email'], info_email['password'], message.encode('utf-8'), infoCustomer['email'])
         bot.send_message(call.message.json['chat']['id'],
-        responses['shop']['info_shop']['info'] + "\n" +
-        responses['shop']['info_shop']['name_customer'] + infoCustomer['name'] + "\n" +
-        responses['shop']['info_shop']['ship'] + str(no_shipment) + "\n" +
-        responses['shop']['info_shop']['name_product'] + jsonProduct + "\n" +
-        responses['shop']['info_shop']['Fecha_compra'] + date_sale + "\n" +
-        responses['shop']['info_shop']['date_delivered'] + date_delivered + "\n" +
-        responses['shop']['info_shop']['track_code'] + track_code + "\n" +
-        responses['shop']['info_shop']['total_paid'] + total_paid + "\n" +
-        responses['shop']['line2'] + "\n" +
-        responses['information_myself']['state'] + infoCustomer['state'] + "\n" +
-        responses['information_myself']['country'] + infoCustomer['country'] + "\n" +
-        responses['information_myself']['address1'] + infoCustomer['address_1'] + "\n" +
-        responses['information_myself']['address2'] + infoCustomer['address_2'] + "\n" +
-        responses['information_myself']['email'] + infoCustomer['email'] + "\n" +
-        responses['information_myself']['zip'] + infoCustomer['zip_code']
+        message
         )
 
     if call.data == 'Mi informacion':

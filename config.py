@@ -13,7 +13,6 @@ from colorclass import Color
 from random import randint
 from datetime import timedelta
 import json
-import time
 import six
 import sys
 import traceback
@@ -26,7 +25,7 @@ import random
 from random import choice
 from bson.objectid import ObjectId
 from pprint import pprint
-from datetime import datetime
+from datetime import *
 MONGO_HOST = ''
 MONGO_PORT = ''
 MONGO_TIME = 0
@@ -158,6 +157,14 @@ def QueryInfoShopping(uid):
     # print(uid)
     find = {"idCustomer":uid}
     return collection.find({"idCustomer":uid})
+
+def QueryInfoShoppingPerProduct(productName):
+    MONGO_COLLECTION = 'ventas'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    # print(uid)
+    find = {"name_product":productName}
+    return collection.find(find)
     
 
 def QueryInfoShoppingProduct(uid):
