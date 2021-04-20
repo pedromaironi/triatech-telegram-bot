@@ -11,6 +11,7 @@ def markup_add_category(name, name_callback):
 @bot.message_handler(func=lambda Message: True)
 def handle_messages(Message):
     # Variables
+    # print(Message)
     product_band = False
     category_band = False
     pc_band = False
@@ -38,7 +39,18 @@ def handle_messages(Message):
             print('pc_band: ' + str(pc_band))
         ## Register Customer
         ## Country
+    # loadedData = json.load(Message)
+    # # message_ = json.dump(str(loadedData))
+    # # m = json.loads(str(message_))
+    # print(str(loadedData))
+    # if "reply_to_message" in loadedData:
+    #     print("existe")
+    # else:
+    #     print("no existe")
+    if Message.reply_to_message:
+
         if Message.reply_to_message.json['text'] == responses['register_customer']['country']:
+    
             object_ = 'country'
             customer_id = 0
             conditions = {}
@@ -182,7 +194,7 @@ def handle_messages(Message):
                 json.dump(data_user, f)
             updateCustomer(customer_id)
             bot.send_message(Message.chat.id, "Segunda dirección:" + Message.json['text'] + " registrada correctamente")
-            
+                
     # words from sentence of conversation.json
     for words_from_conv in words:
         # print("words_from_conv" + words_from_conv)

@@ -268,17 +268,9 @@ def callback_query(call):
     if band_action == True:
         send_action_to_user(call, action,save)
 
-    if call.data == "1":
-        print('1')
-        showDetails(call, "1")
-    elif call.data == "2":
-        showDetails(call, "2")
-    elif call.data == "3":
-        showDetails(call, "3")
-    elif call.data == "4":
-        showDetails(call, "4")
-    elif call.data == "5":
-        showDetails(call, "5")
+    for x in range(0,10):
+        if call.data == str(x):
+            showDetails(call, str(x))
 
 def showDetails(call, idProduct):
     data = {}
@@ -297,7 +289,7 @@ def showDetails(call, idProduct):
         price = details['price']
         url = details['image']
         categoria = details['category']
-        response_products = name_product + "\n" + details_product + "\n" + "Precio: $" + price + '\n' + "Categoria: " + categoria + "\n" + "/category Para obtener todas las categorias que tenemos." + "\n/shop " + " " + name_product + " Para realizar la compra de este producto."
+        response_products = name_product + "\n" + details_product + "\n" + "Precio: $" + price + '\n' + "Categoria: " + categoria + "\n" + "/category Para obtener todas las categorias que tenemos." + "\n/shop " + "" + name_product + "\nPara realizar la compra de este producto."
         bot.send_photo(chat_id=call.message.json['chat']['id'], photo=url, caption=response_products)
 
 
@@ -337,3 +329,5 @@ def send_action_to_user(call,type_action,save):
     bot.send_chat_action(call.message.chat.id, 'typing')
     msg = bot.send_message(call.from_user.id, type_action,
     parse_mode='HTML', reply_markup=menu_register)
+
+
