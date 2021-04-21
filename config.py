@@ -150,6 +150,16 @@ def updateCustomer(uid):
     print(data)
     collection.update_one(find,{"$set":data}, upsert=True)
 
+def updateSale(uid):
+    MONGO_COLLECTION = 'ventas'
+    base_data = client[MONGO_BASE_DATA]
+    collection = base_data[MONGO_COLLECTION]
+    with open('extra_data/cancel_order.json') as f:
+        data = json.load(f)
+    find = {"idCustomer":uid}
+    print(data)
+    collection.update_one(find,{"$set":data}, upsert=True)
+#####
 def QueryInfoShopping(uid):
     MONGO_COLLECTION = 'ventas'
     base_data = client[MONGO_BASE_DATA]
@@ -181,7 +191,7 @@ def QueryInfoShoppingCount(uid):
     collection = base_data[MONGO_COLLECTION]
     # print(uid)
     find = {"idCustomer":uid}
-    return collection.count({"idCustomer":uid})
+    return collection.count({"idCustomer":uid, "status":"enviado"})
 
 def is_user(cid):
     return db.usuarios.find_one(str(cid)) is not None and db.usuarios.find_one(str(cid))['active'] == True
@@ -228,7 +238,7 @@ def showInfoProducts():
     MONGO_COLLECTION = 'productos'
     base_data = client[MONGO_BASE_DATA]
     collection = base_data[MONGO_COLLECTION]
-    return collection.find()
+    return collection.find({"status":"enviado"})
 
 def showDetailsProducts(name):
     MONGO_COLLECTION = 'productos'

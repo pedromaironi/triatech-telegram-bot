@@ -10,14 +10,15 @@ def callback_query(call):
     list_callbacks_sales = []
     all_names_products = showInfoProducts()
     query_quantity_products = cantProducts()
-    for x in range(query_quantity_products):
-        products_names_query = all_names_products.next()
-        for items in products_names_query:
-            # print(items)
-            if items == 'name':
-                list_callbacks_sales.append(products_names_query[items])
-
-
+    try:
+        for x in range(query_quantity_products):
+            products_names_query = all_names_products.next()
+            for items in products_names_query:
+                # print(items)
+                if items == 'name':
+                    list_callbacks_sales.append(products_names_query[items])
+    except:
+        pass
     # Variables
     sales_buttons = InlineKeyboardMarkup()
     uid = call.from_user.id
@@ -46,9 +47,40 @@ def callback_query(call):
                 InlineKeyboardButton("Okay", callback_data="ok_order")
                 )
             message = responses['shop']['info_shop']['info'] + "\n" + responses['shop']['info_shop']['name_customer'] + details_sales['name_customer'] + "\n" + responses['shop']['info_shop']['ship'] + details_sales['shipment_no'] + "\n" +responses['shop']['info_shop']['name_product'] + details_sales['name_product'] + "\n" +responses['shop']['info_shop']['Fecha_compra'] + details_sales['date_sale'] + "\n" +responses['shop']['info_shop']['date_delivered'] + details_sales['date_delivered'] + "\n" +responses['shop']['info_shop']['track_code'] + details_sales['track_code'] + "\n" +responses['shop']['info_shop']['total_paid'] + details_sales['total_paid']
-           
             bot.send_photo(chat_id=call.message.json['chat']['id'], photo=details_of_product_query['image'], caption=message, reply_markup=buttons_options_to_declined_product)
+    
+    if call.data == 'my_sales_cenceled':
+        print("asd")
 
+    if call.data == 'cancel_order_confimation_yes':
+        cont = 0
+        for lines in call.message.text.splitlines():
+            # print(lines)
+            cont = cont + 1
+            nameProductToCancelOrder = ''
+            if cont == 3:
+                nameProductToCancelOrder = lines.replace('Producto: ', "")
+        object_ = 'status'
+        details = QueryInfoShoppingProduct(nameProductToCancelOrder)
+        # print(details)
+        with open('extra_data/cancel_order.json', encoding='utf-8') as f:
+                conditions = json.load(f)
+        for i in conditions:
+           if i == object_:
+                    print(conditions[i])
+                    conditions[i] = "Orden cancelada"
+        data_product = conditions
+
+        with open('extra_data/cancel_order.json', 'w') as f:
+            json.dump(data_product, f)
+
+        updateSale(uid)
+    
+    if call.data == 'cancel_order_confimation_no':
+        bot.send_chat_action(call.message.json['chat']['id'], 'typing')
+        bot.send_message(call.message.json['chat']['id'], "Acción cancelada.")
+   
+    
     if call.data == 'cancel_order':
         # print(call.message.caption)
         message_caption = call.message.caption
@@ -63,20 +95,16 @@ def callback_query(call):
                 cancel_nameProduct = lines.replace('Producto: ', "")
             if cont == 5:
                 time_to_cancel = lines.replace('Fecha de la compra: ' , "")
-        # print(cancel_nameProduct)
         time_remaining = datetime.datetime.strptime(time_to_cancel,  "%Y-%m-%d %H:%M:%S")
-        # print(time_remaining)
         date_remaining = time_remaining.date()
         print(date_remaining)
         hour_remaining = time_remaining.time()
-        # print(str(time_remaining.hour ) + ":" + str(time_remaining.minute) + ":" + str(time_remaining.second ))
-        # print(today)
+
         details_of_sale = QueryInfoShoppingPerProduct(cancel_nameProduct)
-        for items_ in details_of_sale:
-            # print(items_)
-            pass
-        # print(details_of_sale)
-        # print(now.date())
+        # for items_ in details_of_sale:
+        #     # print(items_)
+        #     pass
+
         # Same DATE
         if date_remaining == now.date():
             if hour_remaining < now.time():
@@ -90,10 +118,14 @@ def callback_query(call):
                     message = responses['shop']['line4']
                     bot.send_photo(chat_id=call.message.json['chat']['id'], photo='https://vistapointe.net/images/errors-9.jpg', caption=message)
                 else:
-                    pass
-            else:
-                message = responses['shop']['line4']
-                bot.send_photo(chat_id=call.message.json['chat']['id'], photo='https://vistapointe.net/images/errors-9.jpg', caption=message)
+                    buttons_options_to_declined_product = InlineKeyboardMarkup()
+                    buttons_options_to_declined_product.add(
+                        InlineKeyboardButton("Si", callback_data="cancel_order_confimation_yes"),
+                        InlineKeyboardButton("No", callback_data="cancel_order_confimation_no"),
+                    )
+                    bot.send_chat_action(call.message.json['chat']['id'], 'typing')
+                    bot.send_message(call.message.json['chat']['id'], "Confirmación🚨\n¿Estas seguro de querer cancelar la orden?\n" + cancel_nameProduct, reply_markup=buttons_options_to_declined_product)
+   
         else:
             message = responses['shop']['line4']
             bot.send_photo(chat_id=call.message.json['chat']['id'], photo='https://vistapointe.net/images/errors-9.jpg', caption=message)
@@ -108,16 +140,21 @@ def callback_query(call):
     if call.data == 'my_sales':
         quantity = QueryInfoShoppingCount(uid)
         print(quantity)
-        sales_information = QueryInfoShopping(uid)
-        for amount in range(quantity):
-            sales = sales_information.next()
-            for items_ in sales:
-                if items_ == 'name_product':
-                    # print(sales[items_])
-                    name_product_query = sales[items_]
-                    sales_buttons.add(InlineKeyboardButton(name_product_query, callback_data=name_product_query))
-        bot.send_chat_action(call.message.json['chat']['id'], 'typing')
-        bot.send_message(call.message.json['chat']['id'], "Sales🚨", reply_markup=sales_buttons)
+        if quantity > 0:
+            sales_information = QueryInfoShopping(uid)
+            for amount in range(quantity):
+                sales = sales_information.next()
+                for items_ in sales:
+                    if items_ == 'name_product':
+                        # print(sales[items_])
+                        name_product_query = sales[items_]
+                        sales_buttons.add(InlineKeyboardButton(name_product_query, callback_data=name_product_query))
+            bot.send_chat_action(call.message.json['chat']['id'], 'typing')
+            bot.send_message(call.message.json['chat']['id'], "Sales🚨", reply_markup=sales_buttons)
+        else:
+            bot.send_chat_action(call.message.json['chat']['id'], 'typing')
+            bot.send_message(call.message.json['chat']['id'], "No ha hecho ninguna compra hasta el momento, favor confirme su compra si no lo ha hecho.\nUtiliza /products para ver los productos disponibles.", reply_markup=sales_buttons)
+        
     if call.data == 'x':
         jsonProduct = call.message.json['caption']
         if isExist != None:
@@ -354,7 +391,8 @@ def message_handler(message):
 @bot.message_handler(commands=['shopping'])
 def message_handler(message):
     options = InlineKeyboardMarkup()
-    options.add(InlineKeyboardButton("Mi informacion", callback_data='Mi informacion'), InlineKeyboardButton("Mis compras", callback_data='my_sales'))
+    options.add(InlineKeyboardButton("Mi informacion", callback_data='Mi informacion'), InlineKeyboardButton("Mis compras", callback_data='my_sales') )
+    options.add(InlineKeyboardButton("Ordenes canceladas", callback_data='my_sales_cenceled'))
     bot.send_message(message.chat.id, "Shopping🚨", reply_markup=options)
 
 def send_action_to_user(call,type_action,save):
