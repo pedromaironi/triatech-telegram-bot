@@ -22,9 +22,18 @@ Tip: Type `pip` and double-tab to see different possibilities, maybe you need to
 ```
 
 ```bash
-pip3 install colorclass
 pip3 install pyTelegramBotAPI
 pip3 install psutil
+```
+Please execute the file called requirements
+```
+# install python3 python3-pip
+py==1.4.29
+pytest==3.0.2
+requests==2.20.0
+wheel==0.24.0
+telebot==0.0.4
+python-telegram-logger=1.4
 ```
 When you have the `API key` and the `Token`, paste them into `extra_data/data.json`.
 
@@ -32,18 +41,16 @@ When you have the `API key` and the `Token`, paste them into `extra_data/data.js
 
 ### Main commands
 ```
-/lang: Shows a keyboard to change the bot language.
-/info: Gives information about the bot.
-/help: Shows help about the commands.
-/products: Gives a list with the name of all the products.
-/credits: Bot credits.
-/contact: Send a message to the bot administrator.
-/notify: Enable/Disable the notifications.
-```
-
-##### `/products`
-```
-/category: Filter the product by the category
+El bot dispone de los siguientes comandos:
+/shopping Mostrar las compras realizadas.
+/products Proporciona una lista con el nombre de todos los productos.
+/credits Créditos del bot.
+/me Obtén información de tu cuenta.
+/contact Redes sociales de TriaTechbot
+/cancel Cancela el comando actual.
+/info Proporciona información sobre la tienda.
+/help Proporciona información sobre los comandos.
+/shop Ryzen 9 | Comando <nombre del producto>
 ```
 
 # Screenshots
