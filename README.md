@@ -47,4 +47,4 @@ When you have the `API key` and the `Token`, paste them into `extra_data/data.js
 ```
 
 # Screenshots
-- Soon
+![image](https://user-images.githubusercontent.com/43529059/115626550-f2458500-a2fd-11eb-9ffc-24d448fa5a9f.png)
