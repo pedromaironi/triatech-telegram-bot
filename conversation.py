@@ -39,14 +39,6 @@ def handle_messages(Message):
             print('pc_band: ' + str(pc_band))
         ## Register Customer
         ## Country
-    # loadedData = json.load(Message)
-    # # message_ = json.dump(str(loadedData))
-    # # m = json.loads(str(message_))
-    # print(str(loadedData))
-    # if "reply_to_message" in loadedData:
-    #     print("existe")
-    # else:
-    #     print("no existe")
     if Message.reply_to_message:
 
         if Message.reply_to_message.json['text'] == responses['register_customer']['country']:
@@ -59,7 +51,7 @@ def handle_messages(Message):
             for i in conditions:
                 if i == object_:
                     conditions[i] = Message.json['text']
-                if i == 'id':
+                if i == 'id':       
                     customer_id = conditions[i]
 
             print(str(customer_id))
@@ -202,16 +194,20 @@ def handle_messages(Message):
         if(first_word.lower() == words_from_conv):
             # print("words[words_from_conv]: " + words[words_from_conv])
             if(product_band):
-                bot.reply_to(Message, words[words_from_conv] , reply_markup=gen_markup())
-            if(category_band):
-                bot.reply_to(Message, words[words_from_conv] , reply_markup=markup_gen())
-            if(pc_band):
-                bot.reply_to(Message, words[words_from_conv] , reply_markup=markup_gen())
+                markup = InlineKeyboardMarkup()
+                x = count_products()
+                print(str(x))
+                y = showInfoProducts()
+                for k in y:
+                    print(k)
+                    markup.add(InlineKeyboardButton(k['name'], callback_data=k['id']))
+                bot.reply_to(Message, words[words_from_conv] , reply_markup=markup)
+            # if(category_band):
+            #     bot.reply_to(Message, words[words_from_conv] , reply_markup=markup_gen())
+            # if(pc_band):
+            #     bot.reply_to(Message, words[words_from_conv] , reply_markup=markup_gen())
 
-@bot.callback_query_handler(func=lambda call: 'Tenemos la siguiente lista de categorias:')
-def callback_query_categories(call):
-     pass
-     # print("call: " + call)
+
 @bot.message_handler(commands=['category'])
 def message_handler(message):
     bot.send_message(message.chat.id, "Categorias", reply_markup=gen_markup())
