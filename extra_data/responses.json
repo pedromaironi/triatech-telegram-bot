@@ -88,6 +88,7 @@
         "line1": "¿Seguro que quiere realizar esta compra?",
         "line2": "Esta es la dirección de envío: ",
         "line3": "A la siguiente direccion: ",
+        "line4": "No se puede cancelar la orden si esta sobrepaso 4 horas desde su compra. ",
         "success": "Gracias por preferirnos, esperamos que vuelva a comprar en nuestra plataforma 🤘",
         "info_shop": {
             "info": "Esta es la informacion de la compra.",

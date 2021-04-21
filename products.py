@@ -5,7 +5,7 @@ import datetime
 def callback_query(call):
 
     now = datetime.datetime.now()
-    print(now.date()+timedelta(days=15))
+    # print(now.date()+timedelta(days=15))
     # Quantity of products with names
     list_callbacks_sales = []
     all_names_products = showInfoProducts()
@@ -52,18 +52,54 @@ def callback_query(call):
     if call.data == 'cancel_order':
         # print(call.message.caption)
         message_caption = call.message.caption
+        today = datetime.datetime.now()
         cont = 0
         cancel_nameProduct = ''
+        time_to_cancel = ''
         for lines in message_caption.splitlines():
             # print(lines)
             cont = cont + 1
             if cont == 4:
                 cancel_nameProduct = lines.replace('Producto: ', "")
-        print(cancel_nameProduct)
+            if cont == 5:
+                time_to_cancel = lines.replace('Fecha de la compra: ' , "")
+        # print(cancel_nameProduct)
+        time_remaining = datetime.datetime.strptime(time_to_cancel,  "%Y-%m-%d %H:%M:%S")
+        # print(time_remaining)
+        date_remaining = time_remaining.date()
+        print(date_remaining)
+        hour_remaining = time_remaining.time()
+        # print(str(time_remaining.hour ) + ":" + str(time_remaining.minute) + ":" + str(time_remaining.second ))
+        # print(today)
         details_of_sale = QueryInfoShoppingPerProduct(cancel_nameProduct)
         for items_ in details_of_sale:
-            print(items_)
+            # print(items_)
+            pass
         # print(details_of_sale)
+        # print(now.date())
+        # Same DATE
+        if date_remaining == now.date():
+            if hour_remaining < now.time():
+                format = "%H:%M:%S"
+                hours = time_remaining.hour + 4
+                aux = str(hours) + ":"+str(time_remaining.minute )+":"+str(time_remaining.second) 
+                timeDate = datetime.datetime.strptime(aux, format)
+                print(timeDate.time())
+                print(now.time())
+                if timeDate.time() < now.time():
+                    message = responses['shop']['line4']
+                    bot.send_photo(chat_id=call.message.json['chat']['id'], photo='https://vistapointe.net/images/errors-9.jpg', caption=message)
+                else:
+                    pass
+            else:
+                message = responses['shop']['line4']
+                bot.send_photo(chat_id=call.message.json['chat']['id'], photo='https://vistapointe.net/images/errors-9.jpg', caption=message)
+        else:
+            message = responses['shop']['line4']
+            bot.send_photo(chat_id=call.message.json['chat']['id'], photo='https://vistapointe.net/images/errors-9.jpg', caption=message)
+
+        if time_remaining < today:
+            pass
     if call.data == 'ok_order':
         message = responses['shop']['success']
         bot.send_photo(chat_id=call.message.json['chat']['id'], photo='https://cdn.dribbble.com/users/1751799/screenshots/5512482/check02.gif', caption=message)
@@ -157,7 +193,8 @@ def callback_query(call):
         'date_sale':date_sale,
         'date_delivered': date_delivered,
         'track_code':track_code,
-        'total_paid':total_paid
+        'total_paid':total_paid,
+        'status':"enviado",
         }
 
         with open('extra_data/information_sale.json', 'w') as f:
